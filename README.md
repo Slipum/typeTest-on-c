@@ -37,7 +37,8 @@ gcc -o typing_test typing_test.c
 1. Run the compiled program:
 
 ```bash
-./typing_test
+chmod +x ./typing-speed-test
+./typing-speed-test
 ```
 
 2. Enter the number of words you want to type.
