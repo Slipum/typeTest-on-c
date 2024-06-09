@@ -12,6 +12,22 @@ This is a console-based typing speed test application written in C. It measures 
 - Centered text display for better readability
 - Handles user input, including backspaces and spaces
 
+## Updated Project Structure
+
+```
+typing_test/
+├── CMakeLists.txt
+├── src/
+│   ├── main.c
+│   ├── terminal.c
+│   ├── terminal.h
+│   ├── words.c
+│   ├── words.h
+│   ├── common.h
+│   ├── wordlist.c
+│   └── wordlist.h
+```
+
 ## Installation
 
 1. Clone the repository:
@@ -26,10 +42,18 @@ git clone https://github.com/yourusername/typing-speed-test.git
 cd typing-speed-test
 ```
 
-3. Compile the program using `gcc`:
+3. Create a `build` directory and navigate to it:
 
 ```bash
-gcc -static typing-test.c -o typing-spead-test
+mkdir build
+cd build
+```
+
+4. Compile the program using CMake:
+
+```bash
+cmake ..
+make
 ```
 
 ## Usage
@@ -37,8 +61,7 @@ gcc -static typing-test.c -o typing-spead-test
 1. Run the compiled program:
 
 ```bash
-chmod +x ./typing-speed-test
-./typing-speed-test
+./typing_test
 ```
 
 2. Enter the number of words you want to type.
@@ -85,7 +108,3 @@ Contributions are welcome! Please feel free to submit a Pull Request or open an 
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
----
-
-Feel free to adjust the repository URL, your GitHub username, and any other details as needed. This documentation provides a clear overview of the project, its features, usage instructions, and a brief explanation of how the code works.

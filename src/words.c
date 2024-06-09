@@ -1,80 +1,15 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-#include <unistd.h>
-#include <termios.h>
+#include "words.h"
+#include "wordlist.h"
 #include <ctype.h>
 #include <sys/ioctl.h>
-
-#define WORD_COUNT 200
-#define MAX_WORD_LENGTH 20
-#define MAX_INPUT_LENGTH 1000
-
-const char *words[WORD_COUNT] = {
-		"example", "test", "speed", "typing", "console", "application", "performance", "efficiency",
-		"random", "words", "generate", "measure", "accuracy", "character", "per", "minute",
-		"typing", "speed", "game", "develop", "track", "time", "correct", "incorrect", "input",
-		"output", "display", "center", "screen", "color", "change", "progress", "feedback",
-		"complete", "score", "result", "performance", "keyboard", "interaction", "user", "interface",
-		"dynamic", "update", "highlight", "visual", "representation", "accuracy", "metrics",
-		"calculation", "real-time", "monitoring", "implementation", "coding", "programming", "learning",
-		"practice", "improvement", "focus", "concentration", "challenge", "fun", "engagement",
-		"skills", "development", "proficiency", "enhancement", "capability", "achievement",
-		"benchmark", "performance", "indicator", "statistics", "data", "collection", "analysis",
-		"evaluation", "performance", "metrics", "progress", "tracking", "assessment", "measurement",
-		"goal", "setting", "progress", "review", "feedback", "loop", "improvement", "cycle",
-		"performance", "optimization", "speed", "typing", "test", "application", "start", "end",
-		"quick", "brown", "fox", "jumped", "over", "lazy", "dog",
-		"abstract", "argue", "brainstorm", "calculate", "determine", "efficient", "fraction",
-		"general", "hypothesis", "integer", "justify", "knowledge", "literature", "magnitude",
-		"notion", "objective", "phenomenon", "query", "resolve", "synthesize", "theory",
-		"understand", "validate", "wisdom", "xenon", "yield", "zenith", "algorithm", "binary",
-		"compile", "debug", "execute", "function", "gateway", "hardware", "internet", "java",
-		"keyboard", "logic", "memory", "network", "operator", "protocol", "queue", "robot",
-		"software", "technology", "update", "virtual", "web", "xml", "yaml", "zip", "array",
-		"byte", "cache", "data", "element", "file", "graph", "heap", "index", "json", "key",
-		"link", "module", "node", "object", "pointer", "query", "record", "stack", "tree",
-		"url", "variable", "while", "xml", "yaml", "zip", "algorithm", "binary", "compile",
-		"debug", "execute", "function", "gateway", "hardware", "internet", "java", "keyboard",
-		"logic", "memory", "network", "operator"};
-
-struct termios orig_termios;
-
-void clearLine()
-{
-	printf("\033[K");
-}
-
-void clearScreen()
-{
-	printf("\033[H\033[J");
-}
-
-void disableRawMode()
-{
-	tcsetattr(STDIN_FILENO, TCSAFLUSH, &orig_termios);
-}
-
-void enableRawMode()
-{
-	struct termios raw;
-	tcgetattr(STDIN_FILENO, &orig_termios);
-	atexit(disableRawMode);
-	raw = orig_termios;
-	raw.c_lflag &= ~(ECHO | ICANON | ISIG);
-	tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
-}
-
-void moveCursorTo(int row, int col)
-{
-	printf("\033[%d;%dH", row, col);
-}
+#include <time.h>
+#include <string.h>
+#include <stdio.h>
 
 void printWordsWithColor(const char **words, int numWords, const char *input, int inputLength)
 {
 	struct winsize w;
-	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+	ioctl(fileno(stdout), TIOCGWINSZ, &w);
 	int termWidth = w.ws_col;
 	int termHeight = w.ws_row;
 
@@ -211,7 +146,7 @@ void runTypingTest(int numWords)
 	time_t start = time(NULL);
 
 	struct winsize w;
-	ioctl(STDIN_FILENO, TIOCGWINSZ, &w);
+	ioctl(fileno(stdin), TIOCGWINSZ, &w);
 	int termHeight = w.ws_row;
 
 	int lineCount = 1;
@@ -299,46 +234,3 @@ void runTypingTest(int numWords)
 	printf("Accuracy: ");
 	printf("\x1b[34m%.2f%%\x1b[0m\n", accuracy);
 }
-
-int main()
-{
-	enableRawMode();
-	int isRunning = 1;
-
-	while (isRunning)
-	{
-		clearScreen();
-		printf("Enter the number of words you want to type: ");
-		int numWords = getNumberOfWords();
-
-		if (numWords > WORD_COUNT)
-		{
-			printf("Number of words exceeds available words. Setting to %d.\n", WORD_COUNT);
-			numWords = WORD_COUNT;
-		}
-
-		clearScreen();
-		int repeatTest = 1;
-
-		while (repeatTest)
-		{
-			runTypingTest(numWords);
-
-			printf("\nPress Enter to try again, 'c' to change number of words, or ESC to exit.\n");
-			char c = getchar();
-			if (c == 27)
-			{
-				isRunning = 0;
-				repeatTest = 0;
-			}
-			else if (c == 'c' || c == 'C')
-			{
-				repeatTest = 0;
-			}
-			clearScreen();
-		}
-	}
-
-	disableRawMode();
-	return 0;
-};

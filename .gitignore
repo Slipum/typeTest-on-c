@@ -1,1 +1,18 @@
 typing-speed-test
+
+# Ignore build artifacts
+/build/
+
+# Ignore compiled binaries
+*.o
+*.out
+
+# Ignore generated files
+*.exe
+*.dSYM/
+
+# Ignore cmake build directory
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+CMakeScripts/
