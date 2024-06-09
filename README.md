@@ -39,7 +39,7 @@ git clone https://github.com/Slipum/typeTest-on-c
 2. Navigate to the project directory:
 
 ```bash
-cd typing-speed-test
+cd typeTest-on-c
 ```
 
 3. Create a `build` directory and navigate to it:
