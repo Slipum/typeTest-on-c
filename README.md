@@ -33,7 +33,7 @@ typing_test/
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/Slipum/typing-speed-test.git
+git clone https://github.com/Slipum/typeTest-on-c
 ```
 
 2. Navigate to the project directory:
