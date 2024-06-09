@@ -170,14 +170,13 @@ int getNumberOfWords()
 	char input[10];
 	int index = 0;
 	char c;
-	int run = 0;
-	while (run)
+	while (1)
 	{
 		c = getchar();
 		if (c == '\r' || c == '\n')
 		{
 			input[index] = '\0';
-			run = 0;
+			break;
 		}
 		else if (c == 127 || c == '\b')
 		{
