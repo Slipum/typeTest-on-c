@@ -110,17 +110,17 @@ void printWordsWithColor(const char **words, int numWords, const char *input, in
 			{
 				if (words[i][j] == input[inputIndex])
 				{
-					printf("\033[1;37m%c\033[0m", words[i][j]); // white for correct chars
+					printf("\033[1;37m%c\033[0m", words[i][j]); // white
 				}
 				else
 				{
-					printf("\033[1;31m%c\033[0m", words[i][j]); // red for incorrect chars
+					printf("\033[1;31m%c\033[0m", words[i][j]); // red
 				}
 				inputIndex++;
 			}
 			else
 			{
-				printf("\033[1;30m%c\033[0m", words[i][j]); // gray for remaining chars
+				printf("\033[1;30m%c\033[0m", words[i][j]); // gray
 			}
 			currentColumn++;
 		}
@@ -131,17 +131,17 @@ void printWordsWithColor(const char **words, int numWords, const char *input, in
 			{
 				if (input[inputIndex] == ' ')
 				{
-					printf("\033[1;37m \033[0m"); // white for correct space
+					printf("\033[1;37m \033[0m"); // white
 				}
 				else
 				{
-					printf("\033[1;31m \033[0m"); // red for incorrect space
+					printf("\033[1;31m \033[0m"); // red
 				}
 				inputIndex++;
 			}
 			else
 			{
-				printf("\033[1;30m \033[0m"); // gray for remaining space
+				printf("\033[1;30m \033[0m"); // gray
 			}
 			currentColumn++;
 		}
@@ -179,12 +179,12 @@ int getNumberOfWords()
 			break;
 		}
 		else if (c == 127 || c == '\b')
-		{ // Handle backspace
+		{
 			if (index > 0)
 			{
 				index--;
 				input[index] = '\0';
-				printf("\b \b"); // Erase the last character from the screen
+				printf("\b \b");
 			}
 		}
 		else if (isdigit(c))
@@ -194,7 +194,7 @@ int getNumberOfWords()
 				input[index] = c;
 				index++;
 				input[index] = '\0';
-				printf("%c", c); // Display the character
+				printf("%c", c);
 			}
 		}
 	}
@@ -224,25 +224,25 @@ void runTypingTest(int numWords)
 			lineCount++;
 			currentLineWidth = 0;
 		}
-		currentLineWidth += wordLength + 1; // +1 for space
+		currentLineWidth += wordLength + 1;
 	}
 
 	int verticalPadding = (termHeight - lineCount) / 2;
+	int isRunning = 1;
 
-	while (1)
+	while (isRunning)
 	{
 		clearScreen();
 		moveCursorTo(verticalPadding, 0);
 		printWordsWithColor(selectedWords, numWords, input, inputIndex);
-
 		char c = getchar();
 		if (c == 27)
-			break; // Exit on ESC key
-		if (c == '\r' || c == '\n')
-			break; // Stop on Enter key
+			isRunning = 0;
+		else if (c == '\r' || c == '\n')
+			isRunning = 0;
 
 		if (c == 127 || c == '\b')
-		{ // Handle backspace
+		{
 			if (inputIndex > 0)
 			{
 				inputIndex--;
@@ -282,7 +282,7 @@ void runTypingTest(int numWords)
 			}
 			totalChars++;
 		}
-		totalChars++; // For space or ending
+		totalChars++;
 	}
 
 	double cpm = (double)correctChars / elapsed * 60;
@@ -303,13 +303,13 @@ void runTypingTest(int numWords)
 int main()
 {
 	enableRawMode();
+	int isRunning = 1;
 
-	int numWords;
-	while (1)
+	while (isRunning)
 	{
 		clearScreen();
 		printf("Enter the number of words you want to type: ");
-		numWords = getNumberOfWords();
+		int numWords = getNumberOfWords();
 
 		if (numWords > WORD_COUNT)
 		{
@@ -318,8 +318,9 @@ int main()
 		}
 
 		clearScreen();
+		int repeatTest = 1;
 
-		while (1)
+		while (repeatTest)
 		{
 			runTypingTest(numWords);
 
@@ -327,13 +328,12 @@ int main()
 			char c = getchar();
 			if (c == 27)
 			{
-				disableRawMode();
-				return 0; // Exit if ESC is pressed
+				isRunning = 0;
+				repeatTest = 0;
 			}
 			else if (c == 'c' || c == 'C')
 			{
-				clearScreen();
-				break; // Exit inner loop to change number of words
+				repeatTest = 0;
 			}
 			clearScreen();
 		}
@@ -341,4 +341,4 @@ int main()
 
 	disableRawMode();
 	return 0;
-}
+};
