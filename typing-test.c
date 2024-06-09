@@ -170,21 +170,16 @@ int getNumberOfWords()
 	char input[10];
 	int index = 0;
 	char c;
-	int run = 1;
-	while (run)
+	while (1)
 	{
 		c = getchar();
 		if (c == '\r' || c == '\n')
 		{
 			input[index] = '\0';
-			run = 0;
+			break;
 		}
 		else if (c == 127 || c == '\b')
-<<<<<<< HEAD
 		{
-=======
-		{ 
->>>>>>> 47249e398fc5aaeddb58dbe79ea2e7973e544f89
 			if (index > 0)
 			{
 				index--;
@@ -199,11 +194,7 @@ int getNumberOfWords()
 				input[index] = c;
 				index++;
 				input[index] = '\0';
-<<<<<<< HEAD
 				printf("%c", c);
-=======
-				printf("%c", c); 
->>>>>>> 47249e398fc5aaeddb58dbe79ea2e7973e544f89
 			}
 		}
 	}
@@ -233,11 +224,7 @@ void runTypingTest(int numWords)
 			lineCount++;
 			currentLineWidth = 0;
 		}
-<<<<<<< HEAD
 		currentLineWidth += wordLength + 1;
-=======
-		currentLineWidth += wordLength + 1; 
->>>>>>> 47249e398fc5aaeddb58dbe79ea2e7973e544f89
 	}
 
 	int verticalPadding = (termHeight - lineCount) / 2;
@@ -250,21 +237,12 @@ void runTypingTest(int numWords)
 		printWordsWithColor(selectedWords, numWords, input, inputIndex);
 		char c = getchar();
 		if (c == 27)
-<<<<<<< HEAD
 			isRunning = 0;
 		else if (c == '\r' || c == '\n')
 			isRunning = 0;
 
 		if (c == 127 || c == '\b')
 		{
-=======
-			break;
-		if (c == '\r' || c == '\n')
-			break;
-
-		if (c == 127 || c == '\b')
-		{ 
->>>>>>> 47249e398fc5aaeddb58dbe79ea2e7973e544f89
 			if (inputIndex > 0)
 			{
 				inputIndex--;
@@ -304,11 +282,7 @@ void runTypingTest(int numWords)
 			}
 			totalChars++;
 		}
-<<<<<<< HEAD
 		totalChars++;
-=======
-		totalChars++; 
->>>>>>> 47249e398fc5aaeddb58dbe79ea2e7973e544f89
 	}
 
 	double cpm = (double)correctChars / elapsed * 60;
@@ -354,22 +328,12 @@ int main()
 			char c = getchar();
 			if (c == 27)
 			{
-<<<<<<< HEAD
 				isRunning = 0;
 				repeatTest = 0;
 			}
 			else if (c == 'c' || c == 'C')
 			{
 				repeatTest = 0;
-=======
-				disableRawMode();
-				return 0;
-			}
-			else if (c == 'c' || c == 'C')
-			{
-				clearScreen();
-				break; 
->>>>>>> 47249e398fc5aaeddb58dbe79ea2e7973e544f89
 			}
 			clearScreen();
 		}
